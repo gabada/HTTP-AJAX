@@ -10,7 +10,7 @@ class App extends React.Component {
         super();
         this.state = {
             friendsData: [],
-            friend: '',
+            name: '',
             age: '',
             email: ''
         }
@@ -32,11 +32,22 @@ class App extends React.Component {
         });
     }
 
+    handleSubmitFriend = () => {
+        const friend = {
+            name: this.state.name,
+            age: this.state.age,
+            email: this.state.email
+        };
+        axios.post('http://localhost:5000/friends', friend)
+            .then(response => console.log(response))
+            .catch(err => console.log(err));
+    }
+
     render() {
         return (
             <div className="App">
                 <form>
-                <input type="text" placeholder="new friend name" onChange={this.handleFriendChange} name="friend" value={this.state.friend} />
+                <input type="text" placeholder="new friend name" onChange={this.handleFriendChange} name="name" value={this.state.name} />
                 <input type="text" placeholder="new friend age" onChange={this.handleFriendChange} name="age" value={this.state.age} />
                 <input type="text" placeholder="new friend email" onChange={this.handleFriendChange} name="email" value={this.state.email} />
                 </form>
