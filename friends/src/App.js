@@ -12,7 +12,7 @@ class App extends React.Component {
         this.state = {
             friendsData: [],
             name: '',
-            age: '',
+            age: null,
             email: ''
         }
     }
@@ -41,10 +41,22 @@ class App extends React.Component {
         };
         axios.post('http://localhost:5000/friends', friend)
             .then(response => {
-            console.log(response)
-            this.setState({ friendsData: response.data, name: '', age: '', email: ''})
+            this.setState({ friendsData: response.data, name: '', age: null, email: ''})
             })
             .catch(err => console.log(err));
+    }
+
+    handleUpdateFriend = friend => {
+        const updatedFriend = {
+            name: this.state.name,
+            age: this.state.age,
+            email: this.state.email
+        };
+        axios.put(`http://localhost:5000/friends/${friend.id}`, updatedFriend)
+            .then(response => {
+                this.setState({ friendsData: response.data })
+            })
+            .catch(console.log)
     }
 
     handleDeleteFriend = friend => {
@@ -58,7 +70,7 @@ class App extends React.Component {
     render() {
         return (
             <div className="App">
-                <FriendsList friends={this.state.friendsData} handleDeleteFriend={this.handleDeleteFriend} />
+                <FriendsList friends={this.state.friendsData} handleDeleteFriend={this.handleDeleteFriend} handleUpdateFriend={this.handleUpdateFriend} />
                 <Route exact path="/newfriend/" render={props => <FriendForm {...props} handleFriendChange={this.handleFriendChange} handleSubmitFriend={this.handleSubmitFriend} /> } />
                 <Link to="/newfriend/">Add Friend</Link>
             </div>
