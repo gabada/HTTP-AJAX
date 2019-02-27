@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FriendsList = () => {
+const FriendsList = props => {
     return (
         <div>
             {props.friends.map(friend => {
