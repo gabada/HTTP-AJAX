@@ -39,7 +39,10 @@ class App extends React.Component {
             email: this.state.email
         };
         axios.post('http://localhost:5000/friends', friend)
-            .then(response => console.log(response))
+            .then(response => {
+            console.log(response)
+            this.setState({ friendsData: response.data, name: '', age: '', email: ''})
+            })
             .catch(err => console.log(err));
     }
 
