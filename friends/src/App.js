@@ -1,9 +1,10 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import axios from "axios";
+import { Route, Link } from 'react-router-dom';
 
 import './index.css';
 import FriendsList from './components/FriendsList';
+import FriendForm from './components/FriendForm';
 
 class App extends React.Component {
     constructor() {
@@ -46,16 +47,20 @@ class App extends React.Component {
             .catch(err => console.log(err));
     }
 
+    handleDeleteFriend = friend => {
+        axios.delete(`http://localhost:5000/friends/${friend.id}`)
+            .then(response => {
+                this.setState({ friendsData: response.data})
+            })
+            .catch(console.log)
+    }
+
     render() {
         return (
             <div className="App">
-                <form>
-                <input type="text" placeholder="new friend name" onChange={this.handleFriendChange} name="name" value={this.state.name} />
-                <input type="text" placeholder="new friend age" onChange={this.handleFriendChange} name="age" value={this.state.age} />
-                <input type="text" placeholder="new friend email" onChange={this.handleFriendChange} name="email" value={this.state.email} />
-                </form>
-                <button onClick={this.handleSubmitFriend}>Add New Friend</button>
-                <FriendsList friends={this.state.friendsData} />
+                <FriendsList friends={this.state.friendsData} handleDeleteFriend={this.handleDeleteFriend} />
+                <Route exact path="/newfriend/" render={props => <FriendForm {...props} handleFriendChange={this.handleFriendChange} handleSubmitFriend={this.handleSubmitFriend} /> } />
+                <Link to="/newfriend/">Add Friend</Link>
             </div>
         )
     }
