@@ -13,7 +13,8 @@ class App extends React.Component {
             friendsData: [],
             name: '',
             age: '',
-            email: ''
+            email: '',
+            gender: ''
         }
     }
 
@@ -37,11 +38,12 @@ class App extends React.Component {
         const friend = {
             name: this.state.name,
             age: this.state.age,
-            email: this.state.email
+            email: this.state.email,
+            gender: this.state.gender
         };
         axios.post('http://localhost:5000/friends', friend)
             .then(response => {
-            this.setState({ friendsData: response.data, name: '', age: '', email: ''})
+            this.setState({ friendsData: response.data, name: '', age: '', email: '', gender: ''})
             })
             .catch(err => console.log(err));
     }
@@ -50,11 +52,12 @@ class App extends React.Component {
         const updatedFriend = {
             name: this.state.name,
             age: this.state.age,
-            email: this.state.email
+            email: this.state.email,
+            gender: this.state.gender
         };
         axios.put(`http://localhost:5000/friends/${friend.id}`, updatedFriend)
             .then(response => {
-                this.setState({ friendsData: response.data })
+                this.setState({ friendsData: response.data, name: '', age: '', email: '', gender: '' })
             })
             .catch(console.log)
     }
@@ -71,7 +74,7 @@ class App extends React.Component {
         return (
             <div className="App">
                 <FriendsList friends={this.state.friendsData} handleDeleteFriend={this.handleDeleteFriend} handleUpdateFriend={this.handleUpdateFriend} />
-                <Route exact path="/newfriend/" render={props => <FriendForm {...props} handleFriendChange={this.handleFriendChange} handleSubmitFriend={this.handleSubmitFriend} name={this.state.name} age={this.state.age} email={this.state.email} /> } />
+                <Route exact path="/newfriend/" render={props => <FriendForm {...props} handleFriendChange={this.handleFriendChange} handleSubmitFriend={this.handleSubmitFriend} name={this.state.name} age={this.state.age} email={this.state.email} gender={this.state.gender} /> } />
                 <Link to="/newfriend/">Add Friend</Link>
             </div>
         )
