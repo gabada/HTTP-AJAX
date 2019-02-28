@@ -12,7 +12,7 @@ class App extends React.Component {
         this.state = {
             friendsData: [],
             name: '',
-            age: null,
+            age: '',
             email: ''
         }
     }
@@ -41,7 +41,7 @@ class App extends React.Component {
         };
         axios.post('http://localhost:5000/friends', friend)
             .then(response => {
-            this.setState({ friendsData: response.data, name: '', age: null, email: ''})
+            this.setState({ friendsData: response.data, name: '', age: '', email: ''})
             })
             .catch(err => console.log(err));
     }
@@ -71,7 +71,7 @@ class App extends React.Component {
         return (
             <div className="App">
                 <FriendsList friends={this.state.friendsData} handleDeleteFriend={this.handleDeleteFriend} handleUpdateFriend={this.handleUpdateFriend} />
-                <Route exact path="/newfriend/" render={props => <FriendForm {...props} handleFriendChange={this.handleFriendChange} handleSubmitFriend={this.handleSubmitFriend} /> } />
+                <Route exact path="/newfriend/" render={props => <FriendForm {...props} handleFriendChange={this.handleFriendChange} handleSubmitFriend={this.handleSubmitFriend} name={this.state.name} age={this.state.age} email={this.state.email} /> } />
                 <Link to="/newfriend/">Add Friend</Link>
             </div>
         )
